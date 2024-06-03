@@ -3,16 +3,13 @@ import React from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
 import Link from 'next/link'
 import profile from '@/public/json/personal_data.json'
-import { FaInstagram, FaLinkedin, FaCalendarAlt } from 'react-icons/fa';
+import { FaInstagram, FaLinkedin } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 
 
 const Footer = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    const handler = () => {
-        console.log('clicked');
-    }
     return (
         <>
             <div className='w-full h-48 bg-slate-800 flex flex-col items-center justify-center gap-4 text-white'>
