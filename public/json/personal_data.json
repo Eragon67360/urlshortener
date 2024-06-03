@@ -1,0 +1,18 @@
+{
+    "Name": "Thomas Moser",
+    "Birthday": {
+        "Day": 15,
+        "Month": 3,
+        "Year": 2001
+    },
+    "Email": "thomas-moser@orange.fr",
+    "Phone": "+33 6 47 84 93 08",
+    "WhatsApp": "33647849308",
+    "LinkedIn": "https://www.linkedin.com/in/thomas-moser67/",
+    "Github": "https://github.com/Eragon67360",
+    "Instagram": "https://www.instagram.com/thomas_msr_67/",
+    "Calendly": "https://calendly.com/thomas-moser-oj9y/30min",
+    "Youtube": "https://www.youtube.com/channel/UC3IhL8CT3-xES72s_IRwuHw",
+    "Repository":"https://github.com/Eragon67360/urlshortener",
+    "License":"https://github.com/Eragon67360/urlshortener/blob/main/LICENSE.md"
+}
