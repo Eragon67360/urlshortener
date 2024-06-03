@@ -37,16 +37,16 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-24 min-h-screen">
-      <h1 className="text-[64px] font-bold text-white z-10">URL Shortener</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen gap-8">
+      <h1 className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold text-white z-10">URL Shortener</h1>
 
-      <form onSubmit={handleSubmit} className="z-20 flex w-1/2 p-0">
+      <form onSubmit={handleSubmit} className="z-20 flex w-4/5 lg:w-1/2 p-0">
         <input
           type="url"
           placeholder="Enter your URL"
           value={longUrl}
           onChange={(e) => setLongUrl(e.target.value)}
-          className="p-3 rounded-lg rounded-r-none w-full focus:outline-none"
+          className="p-3 rounded-lg rounded-r-none w-full focus:outline-none text-xs lg:text-base"
           required
         />
         {loading ? (
@@ -54,7 +54,7 @@ export default function Home() {
             <Spinner color="warning" />
           </div>
         ) : (
-          <button type="submit" className={`bg-orange-500 text-white p-2 rounded rounded-l-none ${!longUrl ? 'opacity-100 bg-gray-400 cursor-not-allowed' : ''}`} disabled={!longUrl}>
+          <button type="submit" className={`bg-orange-500 text-white text-xs lg:text-base p-2 rounded-lg rounded-l-none ${!longUrl ? 'opacity-100 bg-gray-400 cursor-not-allowed' : ''}`} disabled={!longUrl}>
             Shorten
           </button>
         )}
@@ -69,6 +69,7 @@ export default function Home() {
                 <ModalBody>
                   <div className='flex flex-col gap-2'>
                     {shortUrl}
+                    <p>This URL is valid for 7 days</p>
                   </div>
                 </ModalBody>
                 <ModalFooter>

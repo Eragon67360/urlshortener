@@ -12,12 +12,10 @@ const Footer = () => {
 
     return (
         <>
-            <div className='w-full h-48 bg-slate-800 flex flex-col items-center justify-center gap-4 text-white'>
+            <div className='w-full h-32 bg-[#041f26] flex flex-col items-center justify-center gap-4 text-white'>
                 <p>©{(new Date().getFullYear())} Thomas Moser</p>
                 <ul className='flex gap-2'>
                     <li><Link href={profile.Repository} className='hover:text-orange-500'>Github</Link></li>
-                    <li>|</li>
-                    <li><Link href={'/services'} className='hover:text-orange-500'>Terms of Service</Link></li>
                     <li>|</li>
                     <li><div className='hover:text-orange-500 cursor-pointer' onClick={onOpen} >Contact</div></li>
                 </ul>

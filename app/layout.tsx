@@ -20,8 +20,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="absolute inset-0 bg-black opacity-65"></div>
-          <main className="min-h-screen bg-image bg-cover bg-no-repeat">
+          <div className="absolute inset-0 bg-black opacity-80"></div>
+          <main className="min-h-screen bg-mobile lg:bg-image bg-cover bg-no-repeat">
             {children}
             <Footer />
           </main>

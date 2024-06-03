@@ -32,7 +32,7 @@ const SlugPage = async () => {
     return (
         <div>
             <h1>404 - Entry not found</h1>
-            <p>The entry with slug "{slug.code}" does not exist.</p>
+            <p>The entry with slug &quot;{slug.code}&quot; does not exist.</p>
         </div>
     );
 };
