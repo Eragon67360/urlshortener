@@ -9,7 +9,7 @@ async function parseRequestBody(request: NextRequest): Promise<FormData> {
 
 export async function POST(req: NextRequest) {
     const { longUrl } = await req.json();
-    
+
     if (!longUrl) {
         return NextResponse.json({ error: 'URL is required' }, { status: 400 });
     }
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     try {
         await pool.query(
-            'INSERT INTO urls (short_code, long_url) VALUES ($1, $2)',
+            "INSERT INTO urls (short_code, long_url, expires_at) VALUES ($1, $2, NOW() + INTERVAL '1 minute')",
             [shortCode, longUrl]
         );
         return NextResponse.json({ shortUrl }, { status: 201 });
