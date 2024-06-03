@@ -1,12 +1,11 @@
-import { GetServerSideProps } from 'next';
+'use client'
 import pool from '@/lib/db';
+import { useParams } from 'next/navigation';
 
-export default function RedirectPage() {
-  return null;
-}
+const page = async () => {
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { code } = context.params!;
+  const { code } = useParams();
+
   console.log(code);
   const result = await pool.query('SELECT long_url FROM urls WHERE short_code = $1', [code]);
 
@@ -23,3 +22,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 };
+export default page
