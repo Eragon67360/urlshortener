@@ -2,7 +2,7 @@
 import pool from '@/lib/db';
 import { useParams } from 'next/navigation';
 
-const page = async () => {
+const Page = async () => {
 
   const { code } = useParams();
 
@@ -22,4 +22,4 @@ const page = async () => {
     };
   }
 };
-export default page
+export default Page
