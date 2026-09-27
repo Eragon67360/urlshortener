@@ -1,0 +1,95 @@
+<!doctype html>
+<!-- URL Shortener hover loop (8s, 1280x800). Real captures from urlshortener.thomasmoserdev.com; see capture.mjs. -->
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="base.css" />
+<style>
+  /* The app's own colors: the orange "Shorten" button (orange-500) and the footer's dark teal. */
+  :root { --orange: #f97316; --teal: #041f26; }
+  .wipe { position: absolute; top: 0; bottom: 0; width: 1500px; left: -1500px; z-index: 30;
+    background: var(--orange); box-shadow: 18px 0 0 var(--teal); }
+  .clip { position: absolute; display: block; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="layer" id="page">
+    <img class="shot" id="home" src="captures/home.png" />
+    <div id="typed"></div>
+    <img class="shot" id="typedFull" src="captures/typed-full.png" />
+  </div>
+  <div class="layer" id="footer">
+    <img class="shot" id="footerHover" src="captures/footer-hover.png" />
+    <img class="shot" id="contact" src="captures/contact.png" />
+  </div>
+  <div class="layer" id="homeEnd"><img class="shot" src="captures/home.png" /></div>
+  <div class="wipe" id="wipe"></div>
+  <div class="hv-cursor" id="cursor"></div>
+</div>
+<script src="engine.js"></script>
+<script src="captures/layout.js"></script>
+<script>
+  const { tw, seg, keys, ease } = HV;
+  const L = window.LAYOUT;
+  const $ = (id) => document.getElementById(id);
+  const center = (b) => [b.x + b.w / 2, b.y + b.h / 2];
+
+  // One real capture of the form row per typed character, placed where it was captured.
+  const N = L.text.length;
+  const typedImgs = [];
+  for (let i = 1; i <= N; i++) {
+    const img = document.createElement("img");
+    img.className = "clip";
+    img.src = `captures/typed-${i}.png`;
+    Object.assign(img.style, { left: `${L.clip.x}px`, top: `${L.clip.y}px`, width: `${L.clip.width}px` });
+    $("typed").appendChild(img);
+    typedImgs.push(img);
+  }
+
+  // Zoom on the form while typing; page coordinates map to the stage through it.
+  const Z = 1.35;
+  const [ox, oy] = center({ x: L.input.x, y: L.input.y, w: L.input.w + L.button.w, h: L.input.h });
+  const zoomed = ([x, y]) => [ox + (x - ox) * Z, oy + (y - oy) * Z];
+  const TYPE_START = 1.1, CPS = 11, TYPE_END = TYPE_START + N / CPS;
+  const [ix, iy] = zoomed([L.input.x + 90, L.input.y + L.input.h - 6]);
+  const [bx, by] = zoomed(center(L.button));
+  const [cx, cy] = center(L.contact);
+  const [lx, ly] = [L.linkedin.x + 30, L.linkedin.y + 14];
+  const CLICK_INPUT = 1.0, CLICK_CONTACT = 5.45, HOVER_CONTACT = 5.1, MODAL_AT = 5.5;
+  const moveCursor = HV.cursor($("cursor"), [
+    [0.45, 1010, 700], [CLICK_INPUT - 0.05, ix, iy], [TYPE_END + 0.1, ix, iy], [3.95, bx, by], [4.35, bx, by],
+    [HOVER_CONTACT, cx, cy], [CLICK_CONTACT + 0.15, cx, cy], [6.2, lx, ly], [6.55, lx, ly],
+  ], [CLICK_INPUT, CLICK_CONTACT]);
+
+  /** An orange panel with a dark teal edge sweeping across the frame, fully covering it at `mid`. */
+  const wipeX = (t, start, mid, end) =>
+    t < start || t > end ? -1600 : t < mid ? tw(t, start, mid, -1600, -110, ease.in) : tw(t, mid, end, -110, 1300, ease.out);
+
+  window.DURATION = 8;
+  window.renderAt = (t) => {
+    // Typing, then the full page in its typed state (identical where the clips were).
+    const chars = Math.min(N, Math.max(0, Math.floor((t - TYPE_START) * CPS)));
+    const full = t >= TYPE_END + 0.1;
+    typedImgs.forEach((img, i) => (img.style.opacity = !full && i + 1 === chars ? 1 : 0));
+    $("typedFull").style.opacity = full ? 1 : 0;
+
+    // Zoom in on the form, then back out while the page scrolls to the footer.
+    const z = keys(t, [[0, 1], [0.95, Z], [4.3, Z], [5.0, 1]]);
+    const scroll = tw(t, 4.35, 5.05, 0, L.scroll);
+    $("page").style.transformOrigin = `${ox}px ${oy}px`;
+    $("page").style.transform = `translateY(${-scroll}px) scale(${z})`;
+
+    // Footer: the Contact link's hover state, then the real Contact dialog.
+    $("footer").style.opacity = t >= HOVER_CONTACT && t < 7.1 ? 1 : 0;
+    $("contact").style.opacity = seg(t, MODAL_AT, MODAL_AT + 0.15);
+    $("homeEnd").style.opacity = t >= 7.1 ? 1 : 0;
+
+    const w = wipeX(t, 6.8, 7.1, 7.45);
+    $("wipe").style.transform = `translateX(${w + 1500}px)`;
+
+    moveCursor(t);
+  };
+</script>
+</body>
+</html>
